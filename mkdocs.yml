@@ -41,7 +41,9 @@ extra_css:
 
 nav:
   - Home: index.md
-  - AICFD: aicfd.md
+  - AICFD:
+    - Overview: aicfd.md
+    - Mesh Sensitivity Lessons: aicfd-lessons.md
   - AI Academic Writing:
     - Overview: academic-writing.md
     - Programmatic .docx Editing: docx-editing-lessons.md
