@@ -12,6 +12,14 @@ The full AICFD workflow boils down to three steps:
 
 ## Paths
 
+!!! note "Local environment only"
+    The paths below are from the author's machine. On a new device,
+    locate the actual install paths first — `where py` (or
+    `python --version`) for Python and the matching AEDT executable
+    under `C:\Program Files\ANSYS Inc\v<version>\AnsysEM\` — and update
+    any config that references them. Don't reuse these hardcoded paths
+    verbatim.
+
 - **Python:** `C:\Users\Jiong Chen\AppData\Local\Python\pythoncore-3.14-64\python.exe` (use `py` to invoke)
 - **pyaedt scripts:** `C:\Users\Jiong Chen\AppData\Local\Python\pythoncore-3.14-64\Scripts` — pip warned this isn't on PATH. Only matters if you want to run `pyaedt.exe` / `ansys-launcher.exe` directly; from Python code it's fine.
 - **AEDT:** `C:\Program Files\ANSYS Inc\v252\AnsysEM\ansysedt.exe`

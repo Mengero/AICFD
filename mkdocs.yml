@@ -43,6 +43,7 @@ nav:
   - Home: index.md
   - AICFD:
     - Overview: aicfd.md
+    - Agent Operating Manual: aicfd-agent-prompt.md
     - Mesh Sensitivity Lessons: aicfd-lessons.md
   - AI Academic Writing:
     - Overview: academic-writing.md

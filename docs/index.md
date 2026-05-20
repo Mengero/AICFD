@@ -6,6 +6,7 @@ A personal knowledge base of AI agents and tools I use across different domains.
 
 - **AICFD** — Driving Ansys AEDT simulations with AI agents and pyaedt.
     - [Overview](aicfd.md) — Workflow, prompt structure, and example prompts.
+    - [Agent Operating Manual](aicfd-agent-prompt.md) — Operating rules, AEDT pitfalls, and disk-extraction reference for an Icepak/PyAEDT agent session.
     - [Mesh Sensitivity Lessons](aicfd-lessons.md) — Running log of rules and findings from the Icepak mesh sensitivity study.
 - **AI Academic Writing** — Using AI to support academic writing workflows.
     - [Overview](academic-writing.md) — "Armored" academic copyeditor system prompt.
