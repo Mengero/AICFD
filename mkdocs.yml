@@ -42,7 +42,9 @@ extra_css:
 nav:
   - Home: index.md
   - AICFD: aicfd.md
-  - AI Academic Writing: academic-writing.md
+  - AI Academic Writing:
+    - Overview: academic-writing.md
+    - Programmatic .docx Editing: docx-editing-lessons.md
 
 markdown_extensions:
   - admonition
