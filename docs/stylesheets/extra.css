@@ -166,7 +166,7 @@
 
 /* Navigation — quieter, minimal active state. */
 .md-nav__title {
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.72rem;
@@ -180,6 +180,33 @@
 .md-nav__link:hover {
   color: var(--md-default-fg-color);
   font-weight: 600;
+}
+
+/* Section headers in the desktop sidebar (navigation.sections feature).
+   Material renders the section label as `.md-nav__link` at desktop sizes,
+   so style it to match the top-level `.md-nav__title` — uppercase, gray,
+   letter-spaced — instead of looking like a sibling page link. */
+.md-nav__item--section > .md-nav__link {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  color: var(--md-default-fg-color--lighter);
+  padding-top: 1.5rem;
+  padding-bottom: 0.35rem;
+  cursor: default;
+}
+.md-nav__item--section > .md-nav__link:hover {
+  color: var(--md-default-fg-color--lighter);
+  font-weight: 700;
+}
+
+/* Children of a section get a subtle left guide line so the hierarchy is
+   visually obvious instead of relying on bold-vs-regular weight alone. */
+.md-nav__item--section > .md-nav {
+  padding-left: 0.85rem;
+  margin-left: 0.1rem;
+  border-left: 1px solid var(--md-default-fg-color--lightest);
 }
 
 /* Search box — minimal. */
