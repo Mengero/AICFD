@@ -47,6 +47,7 @@ nav:
     - Mesh Sensitivity Lessons: aicfd-lessons.md
     - Convergence Lessons (HPC): aicfd-convergence-lessons.md
     - Torso Icepak Persistence Pack: aicfd-persistence-pack.md
+    - Blower Scaling Calculator: aicfd-blower-scaling.md
   - AI Academic Writing:
     - Overview: academic-writing.md
     - Programmatic .docx Editing: docx-editing-lessons.md
