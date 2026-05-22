@@ -72,6 +72,7 @@ Interactive scaling tool replicating the Foxconn blower scaling spreadsheet. Ent
     text-align: right;
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-weight: 600;
+    white-space: nowrap;
   }
   #bt-chart {
     height: 460px;
