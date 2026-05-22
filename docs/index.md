@@ -10,10 +10,11 @@ A personal knowledge base of AI agents and tools I use across different domains.
     - [Mesh Sensitivity Lessons](aicfd-lessons.md) — Running log of rules and findings from the Icepak mesh sensitivity study.
     - [Convergence Lessons (HPC)](aicfd-convergence-lessons.md) — Turbulence model, initialization, and discretization recipe distilled from the `noduct` convergence fight on HPC.
     - [Torso Icepak Persistence Pack](aicfd-persistence-pack.md) — Installable bundle (CLAUDE.md + AGENT_PROMPT + LESSONS + memory + scripts) so a fresh agent on a new Windows/HPC machine inherits accumulated project knowledge.
-    - [Blower Scaling Calculator](aicfd-blower-scaling.md) — Interactive tool replicating the Foxconn fan scaling spreadsheet (geometry, RPM, SPL, P-Q curve).
 - **AI Academic Writing** — Using AI to support academic writing workflows.
     - [Overview](academic-writing.md) — "Armored" academic copyeditor system prompt.
     - [Programmatic .docx Editing](docx-editing-lessons.md) — Lessons learned editing Word manuscripts via XML.
+- **Useful Tools** — Interactive browser tools that live on this site.
+    - [Blower Scaling Calculator](tool-blower-scaling.md) — Replicates the Foxconn fan scaling spreadsheet with an editable P-Q curve and side-by-side base/scaled chart.
 
 ---
 
