@@ -45,6 +45,7 @@ nav:
     - Overview: aicfd.md
     - Agent Operating Manual: aicfd-agent-prompt.md
     - Mesh Sensitivity Lessons: aicfd-lessons.md
+    - Convergence Lessons (HPC): aicfd-convergence-lessons.md
   - AI Academic Writing:
     - Overview: academic-writing.md
     - Programmatic .docx Editing: docx-editing-lessons.md
