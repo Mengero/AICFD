@@ -1,0 +1,10 @@
+- [User role](user_role.md) — Figure thermal sim engineer; PyAEDT + Icepak in Python
+- [Autonomy preference](feedback_autonomy.md) — don't ask permission for common ops; allowlist them
+- [Check disk first](feedback_check_disk_first.md) — when API extraction fails, inventory the result directory before debugging API
+- [Monitor, don't wait](feedback_monitor_dont_wait.md) — active watchdog on long solves; kill bad runs early
+- [Convergence rigor](feedback_convergence_rigor.md) — two bars (engineering vs numerical); pick the one the use case needs
+- [Echo monitor events](feedback_echo_monitor_events.md) — when a heartbeat fires, parse + summarize the data in the response, never just "OK"
+- [AEDT + Python env](reference_aedt_env.md) — Python 3.14, AEDT v252, ansys-aedt-core 0.27
+- [Torso Icepak project](reference_torso_project.md) — structure + key names + mesh-study driver
+- [AEDT close/reopen limitation](reference_aedt_close_reopen.md) — pyaedt can't recover solution context after reopen; must do post in-session
+- [AEDT license-kill leak](reference_aedt_license_kill.md) — Stop-Process on mid-solve AEDT leaks elec_solve_icepak licenses for 10-30 min
