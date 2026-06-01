@@ -27,6 +27,30 @@ You can also read the raw Markdown files in `docs/` directly on GitHub.
    ```
 3. Commit and push to `main`. The GitHub Actions workflow rebuilds the site automatically.
 
+## How to use this repo as a Claude Code briefing
+
+A `CLAUDE.md` lives at the repo root. Claude Code auto-loads it whenever a session starts in (or under) the repo directory, so the agent immediately knows where the AICFD docs live and when to read them.
+
+**On a new machine:**
+
+```bash
+git clone https://github.com/Mengero/AICFD.git
+cd AICFD
+claude
+```
+
+That's the whole handoff. The agent reads the AICFD overview, operating manual, and lessons on its own when the task touches Icepak / PyAEDT / fan scaling / convergence work.
+
+**One-off bootstrap on a machine where you can't clone** (a colleague's laptop, a borrowed workstation): open Claude Code and paste this as your first message instead:
+
+> Fetch these AICFD docs and treat them as briefing context, then wait for my task:
+> - https://mengero.github.io/AICFD/aicfd/
+> - https://mengero.github.io/AICFD/aicfd-agent-prompt/
+> - https://mengero.github.io/AICFD/aicfd-lessons/
+> - https://mengero.github.io/AICFD/aicfd-convergence-lessons/
+
+`WebFetch` pulls each page; no clone required.
+
 ## How to preview locally
 
 ```bash
