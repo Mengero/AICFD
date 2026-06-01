@@ -13,6 +13,7 @@ A personal knowledge base of AI agents and tools I use across different domains.
 - **AI Academic Writing** — Using AI to support academic writing workflows.
     - [Overview](academic-writing.md) — "Armored" academic copyeditor system prompt.
     - [Programmatic .docx Editing](docx-editing-lessons.md) — Lessons learned editing Word manuscripts via XML.
+    - [Nature Paper Writing Lessons](nature-paper-writing-lessons.md) — Ten framing-and-craft moves distilled from a real Nature Physics paper, plus a pre-submit self-check.
 - **Useful Tools** — Interactive browser tools that live on this site.
     - [Blower Scaling Calculator](tool-blower-scaling.md) — Replicates the Foxconn fan scaling spreadsheet with an editable P-Q curve and side-by-side base/scaled chart.
 
