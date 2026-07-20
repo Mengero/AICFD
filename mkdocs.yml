@@ -46,6 +46,7 @@ nav:
     - Agent Operating Manual: aicfd-agent-prompt.md
     - Mesh Sensitivity Lessons: aicfd-lessons.md
     - Convergence Lessons (HPC): aicfd-convergence-lessons.md
+    - Model Merge & Alignment Lessons: aicfd-model-merge-lessons.md
     - Torso Icepak Persistence Pack: aicfd-persistence-pack.md
   - AI Academic Writing:
     - Overview: academic-writing.md
