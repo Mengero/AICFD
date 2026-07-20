@@ -176,6 +176,116 @@ The task is complete only when every condition below holds.
    a solve has produced results for me to validate.
 ```
 
+## Scripted operations and the pre-solve gate
+
+The copy-paste prompt above is enough for a one-off study. For repeated work the
+more reliable pattern is a small set of **scripted operations** (each a thin,
+verified PyAEDT call) plus a **hard pre-solve gate** so nothing reaches the
+solver without passing the checklist. Runnable, self-contained examples for every
+operation below live in the repo:
+
+[**`icepak-examples/`**](https://github.com/Mengero/AICFD/tree/main/icepak-examples)
+— one script per operation, dependency-free (plain `ansys.aedt.core`), plus a
+shared connect helper and the batch-solve watchdog.
+
+!!! note "Environment"
+    These examples were developed against a Linux/HPC Ansys install
+    (`v261`, Ansys CPython 3.10). The `ansys.aedt.core` API is identical on
+    Windows — only the interpreter/AEDT paths differ. Locate your own paths
+    (see [Paths](#paths)) rather than copying either machine's verbatim.
+
+### The golden rules (learned the hard way)
+
+1. **Attach, don't spawn.** Reuse the already-open AEDT session; releasing it must
+   **not** close the desktop. Licenses are scarce — a chain of edits should cost
+   one checkout, not one per script. Use a fresh headless session only when needed.
+2. **Never solve without the pre-solve checklist.** After *any* change (geometry,
+   fan, priority, material, boundary, mesh) run the checklist first. A bare "quick
+   remesh and solve" is the most common way to ship a wrong result.
+3. **Always validate — and heal only with the light, GUI-equivalent heal.** Stitch
+   + light surface simplify ON; the per-entity removal sweeps (sliver faces, small
+   edges, small faces) OFF — those are what make a headless heal hang for minutes.
+   Never defeature real holes/chamfers/blends. A good heal barely changes volume.
+4. **"Normal Completion" ≠ converged.** It only means the solver hit its iteration
+   cap. Verify from the physics (see [Review simulation results](#review-simulation-results)).
+5. **MRF fans: the solid impeller must OUTRANK the rotating fluid zone.** Higher
+   priority wins on overlap; if the zone outranks the blades, Icepak replaces them
+   with fluid and the fan swirls without pumping.
+6. **A large cavity mesh region with multi-level meshing (`MaxLevels>0`) meshes but
+   won't solve** — it builds a non-conformal assembly that dies at the solver
+   handoff. Force such regions uniform (`MaxLevels=0`).
+7. **Tell BUSY from STUCK.** A long heal/solve is fine *if AEDT is computing*.
+   Sample the solver's instantaneous CPU; high = crunching, idle for several beats
+   = stuck (look at the code/gRPC, not the model).
+8. **Batch sweeps need a detached, alarming watchdog** (`setsid`/`nohup` + sentinel
+   file + notification), not a log line nobody tails — MRF/Fluent solves can hang
+   on MPI deadlock and fail silently overnight.
+9. **A "license checkout failed / curl error 60 / self-signed certificate" is
+   usually not licensing** — on Linux nodes it's an outdated OS CA bundle. Check
+   `curl https://laas.ansys.com/v1/` before touching license config.
+
+### The gate
+
+```text
+modify → run_preflight(changed_objects=[...]) → resolve findings → solve
+```
+
+The checklist walks: (1) boundary conditions touching changed objects,
+(2) object priorities / overlaps (incl. the MRF rule), (3) mesh-region coverage,
+(4) geometry validation (+ optional heal), (5) gate. It writes a **receipt bound
+to the project's file fingerprint**; the solve step refuses to run unless a
+*passing* receipt exists whose fingerprint still matches the file on disk. Change
+the project after preflight and the receipt goes stale — so "modify then quick-
+solve" is impossible by construction.
+
+### Operation catalog
+
+| Operation | PyAEDT call (essence) | Example |
+| --- | --- | --- |
+| Connect / inspect | `Icepak(project=..., design=..., new_desktop=False)` | `01_connect_and_inspect.py` |
+| Assign material | `obj.material_name = "copper"` · `ipk.assign_material([...], "Al-Extruded")` | `02_assign_material.py` |
+| Object priorities | `ipk.mesh.assign_priorities([[hi...],[...],[lo...]])` | `03_assign_priorities.py` |
+| MRF / rotating fan | edit native fan `OperatingRPM`/`Swirl`; spin axis via PCA | `04_setup_mrf_fan.py` |
+| Local mesh region | `ipk.mesh.assign_mesh_region(parts)` + manual MLM settings | `05_mesh_region.py` |
+| Validate + heal | `ipk.validate_simple()` → `ipk.modeler.heal_objects(...)` (light) | `06_validate_and_heal.py` |
+| Boundary conditions | `ipk.assign_source / assign_*_free_opening / assign_grille ...` | `07_boundary_conditions.py` |
+| Solve + convergence | `ok = ipk.analyze_setup(...)`; trust the bool, verify physics | `08_solve_and_check_convergence.py` |
+| Batch-solve watchdog | detached `ansysedt -batchsolve` monitor + alarm | `solve_watchdog.sh` |
+
 ## Review simulation results
 
-<to be filled>
+Finishing a solve is not the same as trusting it. Review every run before
+approving the next change.
+
+**Did it actually converge?**
+
+- Trust the solver's own success flag first: `ipk.analyze_setup(...)` returns a
+  bool — `True` means the setup solved. Do **not** judge convergence by globbing
+  the results directory for `fields.resd`; that gives false negatives.
+- **"Normal Completion" only means the iteration cap was reached**, not that
+  residuals fell. Confirm from the residual history and the mass balance.
+- Open the `.SOV` file in `*.aedtresults/<Design>.results/` and read the
+  **Volume Flow Rate** block: per-opening flows should sum to ≈ 0 (continuity
+  satisfied). A wildly non-zero sum means it diverged despite the banner.
+
+**Does the physics make sense?**
+
+- For an MRF fan, check blade-tip speed against `ω·r` (e.g. 5000 rpm, r = 40 mm →
+  ≈ 21 m/s). Pure tangential swirl with ~zero net axial flow = the priority bug
+  (impeller ranked below the zone).
+- Inspect temperature and velocity fields on representative cut planes in the GUI.
+  Compare the tracked metrics (max temperature, ΔT, pressure drop, cell count,
+  solve time) against the previous iteration and ask whether the trend is
+  converging or still drifting.
+
+**If it failed:**
+
+- *Invalid geometry* → heal with the light GUI-equivalent settings
+  (`06_validate_and_heal.py`), then re-validate.
+- *Diverged / impossible flow* → stabilize the solver: lower pressure/momentum
+  under-relaxation, enable no-reverse-flow on openings, add iterations. See the
+  [Convergence Lessons (HPC)](aicfd-convergence-lessons.md).
+- *Meshes but dies at the solver handoff* → suspect a non-conformal MLM region;
+  set the large cavity region's `MaxLevels = 0`.
+
+Then send the agent the specific fix as the next prompt and re-run the gate.
