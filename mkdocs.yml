@@ -43,6 +43,7 @@ nav:
   - Home: index.md
   - AICFD:
     - Overview: aicfd.md
+    - What Claude Can Do for CFD: aicfd-capabilities.md
     - Agent Operating Manual: aicfd-agent-prompt.md
     - Mesh Sensitivity Lessons: aicfd-lessons.md
     - Convergence Lessons (HPC): aicfd-convergence-lessons.md

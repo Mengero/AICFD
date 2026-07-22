@@ -6,6 +6,7 @@ A personal knowledge base of AI agents and tools I use across different domains.
 
 - **AICFD** — Driving Ansys AEDT simulations with AI agents and pyaedt.
     - [Overview](aicfd.md) — Workflow, prompt structure, and example prompts.
+    - [What Claude Can Do for CFD](aicfd-capabilities.md) — One-page overview of how the agent drives Icepak thermal-CFD end to end (for sharing).
     - [Agent Operating Manual](aicfd-agent-prompt.md) — Operating rules, AEDT pitfalls, and disk-extraction reference for an Icepak/PyAEDT agent session.
     - [Mesh Sensitivity Lessons](aicfd-lessons.md) — Running log of rules and findings from the Icepak mesh sensitivity study.
     - [Convergence Lessons (HPC)](aicfd-convergence-lessons.md) — Turbulence model, initialization, and discretization recipe distilled from the `noduct` convergence fight on HPC.
