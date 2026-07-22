@@ -25,5 +25,5 @@ For the installable bundle that ships these onto a fresh machine, see `docs/aicf
 
 - **Never push to `main` without an explicit user request.** The site is served from `main`; any broken markdown fails the deploy via `mkdocs build --strict`.
 - Path examples in the docs (`C:\Users\Jiong Chen\AppData\Local\Python\...`, `C:\Program Files\ANSYS Inc\v252\AnsysEM\...`) are from one specific Windows machine. On a new device, locate the actual install paths instead of copying these.
-- Style: minimalist black-and-white with Helvetica / JetBrains Mono. New docs should use plain markdown — headings, lists, code blocks, `!!! note` admonitions. Avoid color or decoration.
+- Style: minimalist black-and-white with Helvetica Light (body weight 300) / JetBrains Mono. New docs should use plain markdown — headings, lists, code blocks, `!!! note` admonitions. Avoid color or decoration.
 - New top-level topics need both an entry in `mkdocs.yml`'s `nav:` and a bullet in `docs/index.md`'s topic list.

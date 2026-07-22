@@ -1,4 +1,4 @@
-# Torso Icepak Persistence Pack
+# Icepak Persistence Pack
 
 !!! note "Windows / HPC bundle, not the live doc site"
     This page describes a **packaged bundle of files** (`CLAUDE.md`,

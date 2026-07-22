@@ -85,10 +85,13 @@
   border-bottom: 1px solid var(--md-default-fg-color--lightest);
 }
 
-/* Typography — large, clean, minimal letter-spacing. */
+/* Typography — large, clean, minimal letter-spacing. Body uses the Light
+   weight (300); renders as Helvetica Neue Light where available (macOS),
+   falling back to Arial at normal weight elsewhere. Headings keep their
+   explicit heavier weights below, so hierarchy is preserved. */
 .md-typeset {
-  font-feature-settings: "ss01", "cv11";
   line-height: 1.7;
+  font-weight: 300;
 }
 .md-typeset h1 {
   font-weight: 700;
