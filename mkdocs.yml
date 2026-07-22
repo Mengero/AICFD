@@ -30,9 +30,9 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
-  font:
-    text: Inter
-    code: JetBrains Mono
+  # Fonts are defined in stylesheets/extra.css (Helvetica is a system font,
+  # not on Google Fonts) — disable Material's Google Fonts autoloading here.
+  font: false
   icon:
     repo: fontawesome/brands/github
 

@@ -1,4 +1,13 @@
+/* JetBrains Mono is the only webfont we load; Helvetica is a system font. */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap");
+
 /* Minimalist black-and-white overrides for Material theme. */
+
+/* Fonts — Helvetica for text (system font), JetBrains Mono for code. */
+:root {
+  --md-text-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --md-code-font: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
 
 /* Light scheme — true white background, true black ink. */
 [data-md-color-scheme="default"] {

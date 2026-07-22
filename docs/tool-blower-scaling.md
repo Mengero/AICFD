@@ -345,7 +345,7 @@ The Q and P scale factors are derived empirically from the Foxconn spreadsheet â
       plot_bgcolor: 'rgba(0,0,0,0)',
       margin: { t: 20, r: 20, b: 60, l: 70 },
       legend: { x: 0.7, y: 0.95, bgcolor: 'rgba(0,0,0,0)' },
-      font: { family: 'Inter, system-ui, sans-serif', color: fg }
+      font: { family: '"Helvetica Neue", Helvetica, Arial, sans-serif', color: fg }
     }, { displayModeBar: false, responsive: true });
   }
 
