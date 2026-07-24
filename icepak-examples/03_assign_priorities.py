@@ -3,16 +3,29 @@
 03_assign_priorities.py -- object overlap priority (the order Icepak resolves
 overlapping bodies).
 
-`ipk.mesh.assign_priorities(groups)` takes a list of groups ordered HIGHEST ->
-LOWEST. Everything in a group shares that level; higher levels win where bodies
-overlap.
+>>> ORDER IS LOWEST -> HIGHEST <<<  `ipk.mesh.assign_priorities(groups)` writes
+`PriorityNumber = <list index> + 1`, and in Icepak the HIGHER PriorityNumber wins
+on overlap. So the FIRST list is the LOWEST priority and the LAST list is the
+HIGHEST. PyAEDT's own docstring says so ("from low to high"); verified empirically
+on 2026-07-24 (see docs/icepak-object-priority.md). Objects you don't pass at all
+land below the first list.
+
+Everything in one group shares that level. Bodies that genuinely overlap must NOT
+share a level -- a solid-solid tie aborts the solve with
+"[error] Parts X and Y intersect". Bodies that merely touch are fine together.
 
 >>> MRF RULE <<<  The SOLID impeller/blades must OUTRANK the rotating MRF fluid
-zone. If the zone outranks the blades, Icepak replaces the blades with fluid
-where they overlap -> the fan spins an empty cylinder -> pure swirl, ~zero net
-thrust ("spins but doesn't pump"). Read the solve validation log:
+zone, so the impeller goes LATER in the list than the zone. If the zone outranks
+the blades, Icepak replaces the blades with fluid where they overlap -> the fan
+spins an empty cylinder -> pure swirl, ~zero net thrust ("spins but doesn't
+pump"). Read the solve validation log:
   bug:   "Parts <impeller> and <MRF_zone> intersect. <MRF_zone> will take precedence"
   fixed: "... <impeller> will take precedence"
+
+>>> VERIFY, DON'T TRUST THE RETURN <<<  assign_priorities() ends in an
+unconditional `return True` -- the bool proves nothing. Confirm the result by
+re-reading the saved .aedt (parse `$begin 'PriorityListParameters'` blocks for
+`EntityList` + `PriorityNumber`) or from the validation log.
 
 On a real model, pass the FULL ordered list of bodies, not a 2-item list -- so
 you set the whole order deliberately rather than disturbing existing levels.
@@ -28,13 +41,15 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _session import IcepakSession, add_common_args  # noqa: E402
 
-# HIGHEST -> LOWEST. Each inner list is one priority level.
+# LOWEST -> HIGHEST. Each inner list is one priority level; the LAST list wins.
 PRIORITY_ORDER = [
-    # ["IM_1"],          # solid impeller/blades -- MUST be above the MRF zone
-    # ["MRF_zone"],      # rotating fluid zone
-    # ["PCB", "chip"],
-    # ["enclosure"],
     # ["Region"],        # the air/solution domain is usually lowest
+    # ["enclosure"],
+    # ["gap_pad"],       # TIM / gel: let the real solids carve it
+    # ["MRF_zone"],      # rotating fluid zone
+    # ["IM_1"],          # solid impeller/blades -- MUST come AFTER the MRF zone
+    # ["PCB"],
+    # ["chip"],          # small bodies nested inside bigger ones go LAST
 ]
 
 
@@ -47,8 +62,8 @@ def main():
 
         if not PRIORITY_ORDER:
             print("PRIORITY_ORDER is empty -- edit it at the top of this file.")
-            print("Example (MRF: impeller outranks the rotating zone):")
-            print("    ipk.mesh.assign_priorities([['IM_1'], ['MRF_zone'], ['Region']])")
+            print("Example (lowest first; MRF impeller outranks the zone so it goes last):")
+            print("    ipk.mesh.assign_priorities([['Region'], ['MRF_zone'], ['IM_1']])")
             return
 
         # Drop names that don't exist so a typo doesn't abort the whole call.
@@ -61,10 +76,15 @@ def main():
             print("    [skip] no valid objects in PRIORITY_ORDER")
             return
 
-        ok = ipk.mesh.assign_priorities(cleaned)
-        print(f"    assigned {len(cleaned)} priority level(s) -> {ok}")
-        print(f"    order (high->low): {cleaned}")
+        # NB: assign_priorities() always returns True -- it is not a success signal.
+        ipk.mesh.assign_priorities(cleaned)
+        print(f"    assigned {len(cleaned)} priority level(s)")
+        for level, grp in enumerate(cleaned, 1):
+            print(f"      PriorityNumber={level:<3} {grp}")
+        print("    (higher PriorityNumber wins on overlap -- last list is strongest)")
 
+    print(">>> VERIFY: re-read the saved .aedt or the validation log; the return")
+    print("    value of assign_priorities() is hardcoded True and proves nothing.")
     print(">>> done. Run the pre-solve checklist before solving (see 08_...).")
 
 

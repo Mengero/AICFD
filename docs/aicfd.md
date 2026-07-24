@@ -210,19 +210,28 @@ shared connect helper and the batch-solve watchdog.
    cap. Verify from the physics (see [Review simulation results](#review-simulation-results)).
 5. **MRF fans: the solid impeller must OUTRANK the rotating fluid zone.** Higher
    priority wins on overlap; if the zone outranks the blades, Icepak replaces them
-   with fluid and the fan swirls without pumping.
-6. **A large cavity mesh region with multi-level meshing (`MaxLevels>0`) meshes but
+   with fluid and the fan swirls without pumping. Mind the direction of the API:
+   `assign_priorities()` takes groups **lowest first**, so the impeller goes *after*
+   the zone in the list — see [Object priority](icepak-object-priority.md).
+6. **Icepak's Validate skips overlap checks by default.** `'Perform Minimal
+   validation'=true` on the design silently suppresses them, so `validate_simple()`
+   returns a clean-looking log that never examined a single overlap. Clear the flag
+   before you trust a validation.
+7. **A large cavity mesh region with multi-level meshing (`MaxLevels>0`) meshes but
    won't solve** — it builds a non-conformal assembly that dies at the solver
    handoff. Force such regions uniform (`MaxLevels=0`).
-7. **Tell BUSY from STUCK.** A long heal/solve is fine *if AEDT is computing*.
+8. **Tell BUSY from STUCK.** A long heal/solve is fine *if AEDT is computing*.
    Sample the solver's instantaneous CPU; high = crunching, idle for several beats
    = stuck (look at the code/gRPC, not the model).
-8. **Batch sweeps need a detached, alarming watchdog** (`setsid`/`nohup` + sentinel
+9. **Batch sweeps need a detached, alarming watchdog** (`setsid`/`nohup` + sentinel
    file + notification), not a log line nobody tails — MRF/Fluent solves can hang
    on MPI deadlock and fail silently overnight.
-9. **A "license checkout failed / curl error 60 / self-signed certificate" is
-   usually not licensing** — on Linux nodes it's an outdated OS CA bundle. Check
-   `curl https://laas.ansys.com/v1/` before touching license config.
+10. **A "license checkout failed / curl error 60 / self-signed certificate" is
+    usually not licensing** — on Linux nodes it's an outdated OS CA bundle. Check
+    `curl https://laas.ansys.com/v1/` before touching license config.
+11. **Don't trust a PyAEDT call's return value as proof.** Several are hardcoded
+    (`assign_priorities` ends in `return True`). Verify the effect by re-reading the
+    saved `.aedt` or the validation log.
 
 ### The gate
 
@@ -244,7 +253,7 @@ solve" is impossible by construction.
 | --- | --- | --- |
 | Connect / inspect | `Icepak(project=..., design=..., new_desktop=False)` | `01_connect_and_inspect.py` |
 | Assign material | `obj.material_name = "copper"` · `ipk.assign_material([...], "Al-Extruded")` | `02_assign_material.py` |
-| Object priorities | `ipk.mesh.assign_priorities([[hi...],[...],[lo...]])` | `03_assign_priorities.py` |
+| Object priorities | `ipk.mesh.assign_priorities([[lo...],[...],[hi...]])` — **lowest first**; return value is a hardcoded `True` | `03_assign_priorities.py` |
 | MRF / rotating fan | edit native fan `OperatingRPM`/`Swirl`; spin axis via PCA | `04_setup_mrf_fan.py` |
 | Local mesh region | `ipk.mesh.assign_mesh_region(parts)` + manual MLM settings | `05_mesh_region.py` |
 | Validate + heal | `ipk.validate_simple()` → `ipk.modeler.heal_objects(...)` (light) | `06_validate_and_heal.py` |

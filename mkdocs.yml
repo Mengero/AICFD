@@ -44,6 +44,7 @@ nav:
   - AICFD:
     - Overview: aicfd.md
     - Agent Operating Manual: aicfd-agent-prompt.md
+    - Object Priority (overlaps): icepak-object-priority.md
     - Mesh Sensitivity Lessons: aicfd-lessons.md
     - Convergence Lessons (HPC): aicfd-convergence-lessons.md
     - Torso Icepak Persistence Pack: aicfd-persistence-pack.md

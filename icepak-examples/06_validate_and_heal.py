@@ -8,6 +8,17 @@ Flow: validate -> heal the flagged objects -> re-validate.
 ipk.validate_simple(log_file) returns 1 (valid) / 0 (invalid) and writes a log
 that names the problem entities. heal_objects takes ONE object at a time.
 
+>>> VALIDATE SKIPS OVERLAP CHECKS BY DEFAULT <<<  If the design has
+`'Perform Minimal validation'=true` (Icepak's default) the log will say
+  "Performing minimal design validations. All design validations except boundary
+   overlap checks will be performed."
+and a clean result tells you NOTHING about overlapping bodies. PyAEDT's
+`design_settings` mapping does not expose that property -- use the native call:
+    ipk.odesign.SetDesignSettings(
+        ["NAME:Design Settings Data", "Perform Minimal validation:=", False])
+Then confirm the "minimal design validations" line is gone from the next log.
+See docs/icepak-object-priority.md.
+
 >>> USE ONLY THE LIGHT HEAL <<<  These kwargs reproduce exactly what the AEDT GUI
 emits when you record a Heal (Tools > Record Script). Key points:
   * stitch + light surface simplify ON (simplify_geometry=True, simplify_type=2).

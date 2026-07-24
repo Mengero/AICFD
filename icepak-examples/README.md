@@ -14,7 +14,7 @@ These back the [AICFD Overview](https://mengero.github.io/AICFD/aicfd/) on the s
 | `_session.py` | Shared connect helper (attach vs headless, license reuse, lock cleanup). Imported by the others. |
 | `01_connect_and_inspect.py` | Connect and dump objects / fans / mesh regions / boundaries / materials. |
 | `02_assign_material.py` | Assign materials (per object and in bulk). |
-| `03_assign_priorities.py` | Object overlap priority, including the MRF impeller-outranks-zone rule. |
+| `03_assign_priorities.py` | Object overlap priority — groups go **lowest → highest**, incl. the MRF impeller-outranks-zone rule. |
 | `04_setup_mrf_fan.py` | MRF fan: derive spin axis by PCA + set RPM/swirl. |
 | `05_mesh_region.py` | Local refinement region + the large-cavity `MaxLevels=0` fix. |
 | `06_validate_and_heal.py` | Validate geometry + the light, GUI-equivalent heal. |
