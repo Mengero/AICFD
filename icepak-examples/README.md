@@ -20,6 +20,7 @@ These back the [AICFD Overview](https://mengero.github.io/AICFD/aicfd/) on the s
 | `06_validate_and_heal.py` | Validate geometry + the light, GUI-equivalent heal. |
 | `07_boundary_conditions.py` | Assign sources / openings / grilles / walls / resistances. |
 | `08_solve_and_check_convergence.py` | Solve and judge convergence correctly. |
+| `09_setup_conduction_only.py` | Steady-state setup solving **conduction only** (no flow / gravity / radiation). |
 | `solve_watchdog.sh` | Detached, alarming watchdog for batch solves (MPI-deadlock safety). |
 
 ## How to run

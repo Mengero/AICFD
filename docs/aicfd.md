@@ -259,7 +259,34 @@ solve" is impossible by construction.
 | Validate + heal | `ipk.validate_simple()` → `ipk.modeler.heal_objects(...)` (light) | `06_validate_and_heal.py` |
 | Boundary conditions | `ipk.assign_source / assign_*_free_opening / assign_grille ...` | `07_boundary_conditions.py` |
 | Solve + convergence | `ok = ipk.analyze_setup(...)`; trust the bool, verify physics | `08_solve_and_check_convergence.py` |
+| Conduction-only setup | `GetModule("AnalysisSetup").InsertSetup("IcepakSteadyState", [...])` with `Include Flow:=False` | `09_setup_conduction_only.py` |
 | Batch-solve watchdog | detached `ansysedt -batchsolve` monitor + alarm | `solve_watchdog.sh` |
+
+### Conduction-only analysis
+
+For a board/package stack whose only heat paths are solid conduction plus lumped
+network/source boundaries, solve the energy equation alone. Four switches in the
+`IcepakSteadyState` setup do it:
+
+```python
+"Include Temperature:=", True     # solve energy
+"Include Flow:=",        False    # no momentum/continuity
+"Include Gravity:=",     False    # no buoyancy
+"Radiation Model:=",     "Off"
+```
+
+It is far cheaper and more robust than a flow solve, and it is the *correct*
+choice for a design with no `Region`, no openings, no grilles and no fans —
+there, a flow solve has nothing to solve. `"Flow Regime:=", "Laminar"` remains
+in the argument list but is inert; don't misread it as a laminar flow solve.
+
+!!! tip "Record the GUI instead of hand-writing native argument arrays"
+    Icepak's `InsertSetup` array is ~100 entries and is name/order sensitive.
+    Build it with **Tools → Record Script** in the GUI, then replay the recorded
+    array through a PyAEDT gRPC session. Recordings arrive as IronPython
+    (`import ScriptEnv; ScriptEnv.Initialize(...)`) — don't run them that way on
+    this cluster, where `ScriptEnv.Initialize` raises a null-method error under
+    `-RunScriptAndExit`. Keep the argument array, drop the harness.
 
 ## Review simulation results
 
