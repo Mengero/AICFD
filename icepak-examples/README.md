@@ -21,6 +21,11 @@ These back the [AICFD Overview](https://mengero.github.io/AICFD/aicfd/) on the s
 | `07_boundary_conditions.py` | Assign sources / openings / grilles / walls / resistances. |
 | `08_solve_and_check_convergence.py` | Solve and judge convergence correctly. |
 | `09_setup_conduction_only.py` | Steady-state setup solving **conduction only** (no flow / gravity / radiation). |
+| `10_material_sweep_no_op_trap.py` | Material sensitivity sweep that **actually solves** — in-place property edits don't invalidate a solution. |
+| `11_network_boundary_two_resistor.py` | Two-resistor (junction-to-case/board) network BC + the `props["Faces"]` and `solve_inside` traps. |
+| `12_export_results_and_parse.py` | Export SOV + Fields Summary, parse to tables, check the energy balance closes. |
+| `13_native_field_calculator.py` | Per-body temperatures via the native calculator (PyAEDT's field export/plot is broken on 0.26.1). |
+| `14_boundary_htc_sweep.py` | Sweep a wall's air-side HTC with mesh reuse and a pre-solve no-op gate. |
 | `solve_watchdog.sh` | Detached, alarming watchdog for batch solves (MPI-deadlock safety). |
 
 ## How to run
