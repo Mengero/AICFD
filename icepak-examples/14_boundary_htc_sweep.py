@@ -28,6 +28,7 @@ Practical notes from the study this came from:
 
 import argparse
 import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -57,8 +58,13 @@ def set_htc(ipk, name, h):
     got = get_boundary(ipk, name).props.get("Heat Transfer Coefficient")
     print(f"    HTC -> {h} (readback {got})  thickness={b.props.get('Thickness')} "
           f"refT={b.props.get('Reference Temperature')}")
-    if not str(got).startswith(str(h)):
-        raise SystemExit(f"readback mismatch: {got}")
+
+    # Compare NUMERICALLY. A string prefix test is wrong: AEDT stores "35w_per_m2kel"
+    # while str(35.0) is "35.0", so startswith() reports a mismatch on a value that
+    # was in fact written correctly -- and aborts a perfectly good case.
+    m = re.match(r"[-+0-9.eE]+", str(got))
+    if not m or abs(float(m.group(0)) - float(h)) > 1e-9:
+        raise SystemExit(f"readback mismatch: got {got!r}, expected {h}")
 
 
 def solve_and_export(ipk, setup_name, outdir, tag):
