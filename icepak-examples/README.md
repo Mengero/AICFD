@@ -26,6 +26,9 @@ These back the [AICFD Overview](https://mengero.github.io/AICFD/aicfd/) on the s
 | `12_export_results_and_parse.py` | Export SOV + Fields Summary, parse to tables, check the energy balance closes. |
 | `13_native_field_calculator.py` | Per-body temperatures via the native calculator (PyAEDT's field export/plot is broken on 0.26.1). |
 | `14_boundary_htc_sweep.py` | Sweep a wall's air-side HTC with mesh reuse and a pre-solve no-op gate. |
+| `15_grid_export_contours.py` | Contour PNGs from a headless box: native `ExportOnGrid` plane sections (calculator names `Temp`/`Speed`/`Pres`, SI-meter coords, NaN masking) → matplotlib. The PyAEDT grid-export wrapper is broken on 0.26.1. |
+| `16_cutplane_plots_and_dsp.py` | Cross-section plots on a **named construction plane** (face IDs dangle after geometry swaps) + a valid `.dsp` bundle — `SaveFieldsPlots` only bundles plots **created in the same session**. |
+| `17_rendered_snapshots.py` | Real rendered snapshots (GUI mode on an X display): `FieldPlotSelections` must name the plot, wireframe display, force-computing a GUI-created streamline, 7 orientations. |
 | `solve_watchdog.sh` | Detached, alarming watchdog for batch solves (MPI-deadlock safety). |
 
 ## How to run

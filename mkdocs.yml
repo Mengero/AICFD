@@ -50,6 +50,7 @@ nav:
     - Convergence Lessons (HPC): aicfd-convergence-lessons.md
     - Model Merge & Alignment Lessons: aicfd-model-merge-lessons.md
     - Solve Integrity & Post-Processing: icepak-solve-postprocess-lessons.md
+    - Visualization, Snapshots & .dsp: icepak-visualization-snapshots.md
     - Icepak Persistence Pack: aicfd-persistence-pack.md
   - AI Academic Writing:
     - Overview: academic-writing.md
